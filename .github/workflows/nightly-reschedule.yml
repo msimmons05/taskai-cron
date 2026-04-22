@@ -1,0 +1,16 @@
+name: Nightly Reschedule
+
+on:
+  schedule:
+    - cron: '0 5 * * *'  # 5am UTC = midnight Eastern (EST) / 1am EDT
+  workflow_dispatch:       # Allow manual trigger from GitHub Actions UI
+
+jobs:
+  reschedule:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger nightly reschedule
+        run: |
+          curl -X POST https://taskai-gamma.vercel.app/api/nightly-reschedule \
+            -H "Content-Type: application/json" \
+            -w "\nHTTP Status: %{http_code}\n"
